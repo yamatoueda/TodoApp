@@ -25,3 +25,11 @@ struct Tag: Codable, Identifiable, Equatable {
         self.createdAt = createdAt
     }
 }
+
+var tags: [Tag] = []
+
+func addTag(name: String, colorHex: String) {
+    let newTag = Tag(name: name, colorHex: colorHex)
+    tags.append(newTag)
+    StorageManager.shared.saveTags(tags)
+}

@@ -38,3 +38,11 @@ struct Task: Codable, Identifiable, Equatable {
         self.tagIds = tagIds
     }
 }
+
+var tasks: [Task] = []
+
+func addTask(title: String) {
+    let newTask = Task(title: title)
+    tasks.append(newTask)
+    StorageManager.shared.saveTasks(tasks)
+}
