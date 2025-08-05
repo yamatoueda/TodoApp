@@ -34,4 +34,33 @@ final class StorageManager {
             print("❌ タグ保存に失敗しました: \(error)")
         }
     }
+    
+    // MARK: - 読み込み
+    func loadTasks() -> [Task] {
+        guard let data = UserDefaults.standard.data(forKey: taskKey) else {
+            return []
+        }
+        do {
+            let tasks = try JSONDecoder().decode([Task].self, from: data)
+            return tasks
+        } catch {
+            print("❌ タスク読み込みに失敗しました: \(error)")
+            return []
+        }
+    }
+
+    func loadTags() -> [Tag] {
+        guard let data = UserDefaults.standard.data(forKey: tagKey) else {
+            return []
+        }
+        do {
+            let tags = try JSONDecoder().decode([Tag].self, from: data)
+            return tags
+        } catch {
+            print("❌ タグ読み込みに失敗しました: \(error)")
+            return []
+        }
+    }
+
 }
+
