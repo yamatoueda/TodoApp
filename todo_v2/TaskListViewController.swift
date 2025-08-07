@@ -14,7 +14,6 @@ class TaskListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -27,11 +26,13 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
         return AppData.shared.tasks.count
     }
 
+    // セルの中身
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // あとでカスタムセルに置き換える予定
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let task = AppData.shared.tasks[indexPath.row]
-        cell.textLabel?.text = task.title
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        var content = cell.defaultContentConfiguration()
+        content.text = task.title
+        cell.contentConfiguration = content
         return cell
     }
 }
