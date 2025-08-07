@@ -15,13 +15,68 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QG2-lu-cE3">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DOK-Ag-k72">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="126.33333333333333"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="タイトルを入力" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1n-GT-99u">
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="kLE-fz-vGi"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PST-qh-tgF">
+                                                <rect key="frame" x="0.0" y="44" width="393" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="9GH-Aa-Naa"/>
+                                                </constraints>
+                                            </datePicker>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWn-zr-ZgJ">
+                                                <rect key="frame" x="0.0" y="92" width="393" height="34.333333333333371"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="xTn-bL-Qvu"/>
+                                                </constraints>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="登録"/>
+                                                <connections>
+                                                    <action selector="saveButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="CfM-7j-5a6"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="bottom" secondItem="sU0-Vo-4jt" secondAttribute="bottom" id="Lgv-1z-sCo"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="top" secondItem="rqs-aW-POl" secondAttribute="top" id="Qcy-Vk-fD3"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="leading" secondItem="rqs-aW-POl" secondAttribute="leading" id="RED-uj-czr"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="leading" secondItem="sU0-Vo-4jt" secondAttribute="leading" id="Swi-7y-5Io"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="trailing" secondItem="rqs-aW-POl" secondAttribute="trailing" id="XIW-BF-W6C"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="top" secondItem="sU0-Vo-4jt" secondAttribute="top" id="c6R-Oz-Id3"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="trailing" secondItem="sU0-Vo-4jt" secondAttribute="trailing" id="fHs-7r-D2e"/>
+                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="bottom" secondItem="rqs-aW-POl" secondAttribute="bottom" id="o2U-bA-EHm"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="rqs-aW-POl"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="sU0-Vo-4jt"/>
+                            </scrollView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <outlet property="datePicker" destination="PST-qh-tgF" id="L3n-xy-iSd"/>
+                        <outlet property="saveButton" destination="nWn-zr-ZgJ" id="DRB-eC-8kN"/>
+                        <outlet property="titleTextField" destination="r1n-GT-99u" id="yfA-we-hJ3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="-2"/>
+            <point key="canvasLocation" x="139.69465648854961" y="-2.1126760563380285"/>
         </scene>
     </scenes>
     <resources>
