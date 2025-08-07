@@ -11,7 +11,7 @@
         <!--Add Task View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="AddTaskViewController" id="Y6W-OH-hqX" customClass="AddTaskViewController" customModule="todo_v2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTaskViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="AddTaskViewController" customModule="todo_v2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,7 +21,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DOK-Ag-k72">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="126.33333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="142"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="タイトルを入力" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1n-GT-99u">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
@@ -32,13 +32,13 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PST-qh-tgF">
-                                                <rect key="frame" x="0.0" y="44" width="393" height="48"/>
+                                                <rect key="frame" x="0.0" y="44" width="393" height="50"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="9GH-Aa-Naa"/>
                                                 </constraints>
                                             </datePicker>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWn-zr-ZgJ">
-                                                <rect key="frame" x="0.0" y="92" width="393" height="34.333333333333371"/>
+                                                <rect key="frame" x="0.0" y="94" width="393" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="xTn-bL-Qvu"/>
                                                 </constraints>
