@@ -67,17 +67,34 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
         let task = AppData.shared.tasks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        content.text = task.title
+        
+        // 完了済みの場合はタイトルに取り消し線を追加
+        if task.isCompleted {
+            let attributedText = NSAttributedString(
+                string: task.title,
+                attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                           .foregroundColor: UIColor.secondaryLabel]
+            )
+            content.attributedText = attributedText
+        } else {
+            content.text = task.title
+        }
+        
+        // 期限とステータスを表示
+        var secondaryTextParts: [String] = []
         
         if let dueDate = task.dueDate {
             let formatter = DateFormatter()
             formatter.locale = Locale(identifier: "ja_JP")
             formatter.dateStyle = .medium
             formatter.timeStyle = .short
-            content.secondaryText = formatter.string(from: dueDate)
+            secondaryTextParts.append(formatter.string(from: dueDate))
         } else {
-            content.secondaryText = "期限なし"
+            secondaryTextParts.append("期限なし")
         }
+        
+        secondaryTextParts.append(task.isCompleted ? "✅ 完了" : "⏳ 未完了")
+        content.secondaryText = secondaryTextParts.joined(separator: " • ")
         
         cell.contentConfiguration = content
         return cell
@@ -98,5 +115,26 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
             alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel))
             present(alert, animated: true)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let task = AppData.shared.tasks[indexPath.row]
+        let title = task.isCompleted ? "未完了" : "完了"
+        let backgroundColor: UIColor = task.isCompleted ? .systemOrange : .systemGreen
+        
+        let toggleAction = UIContextualAction(style: .normal, title: title) { [weak self] (_, _, completionHandler) in
+            AppData.shared.tasks[indexPath.row].isCompleted.toggle()
+            AppData.shared.tasks[indexPath.row].updatedAt = Date()
+            AppData.shared.saveAll()
+            
+            tableView.reloadRows(at: [indexPath], with: .none)
+            completionHandler(true)
+        }
+        
+        toggleAction.backgroundColor = backgroundColor
+        
+        let configuration = UISwipeActionsConfiguration(actions: [toggleAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        return configuration
     }
 }
