@@ -68,6 +68,17 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
         content.text = task.title
+        
+        if let dueDate = task.dueDate {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "ja_JP")
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            content.secondaryText = formatter.string(from: dueDate)
+        } else {
+            content.secondaryText = "期限なし"
+        }
+        
         cell.contentConfiguration = content
         return cell
     }

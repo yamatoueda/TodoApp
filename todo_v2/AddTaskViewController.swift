@@ -11,6 +11,8 @@ class AddTaskViewController: UIViewController {
     
     @IBOutlet weak var titleTextField: UITextField!
     
+    @IBOutlet weak var dueDateSwitch: UISwitch!
+    
     @IBOutlet weak var datePicker: UIDatePicker!
     
     @IBOutlet weak var saveButton: UIButton!
@@ -26,6 +28,10 @@ class AddTaskViewController: UIViewController {
         // モダールから戻ったあとの挙動書く
         // tableView.reloadData()
     }
+    
+    @IBAction func dueDateSwitchChanged(_ sender: UISwitch) {
+        datePicker.isHidden = !sender.isOn
+    }
 
     
     @IBAction func saveButtonTapped(_ sender: Any) {
@@ -38,7 +44,7 @@ class AddTaskViewController: UIViewController {
             return
         }
 
-        let dueDate = datePicker.date
+        let dueDate = dueDateSwitch.isOn ? datePicker.date : nil
 
         let task = Task(title: title, dueDate: dueDate)
 

@@ -17,24 +17,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="DOK-Ag-k72">
-                                <rect key="frame" x="20.0" y="150" width="353" height="156"/>
+                                <rect key="frame" x="20.0" y="150" width="353" height="187"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="タイトルを入力" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1n-GT-99u">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="kLE-fz-vGi"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dueDateSwitchStack">
+                                        <rect key="frame" x="0.0" y="60" width="353" height="31"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="期限を設定" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dueDateLabel">
+                                                <rect key="frame" x="0.0" y="0.0" width="296" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dueDateSwitch">
+                                                <rect key="frame" x="304" y="0.0" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="dueDateSwitchChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="switchConnection"/>
+                                                </connections>
+                                            </switch>
+                                        </subviews>
+                                    </stackView>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PST-qh-tgF">
-                                        <rect key="frame" x="0.0" y="44" width="393" height="48"/>
+                                        <rect key="frame" x="0.0" y="107" width="353" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="9GH-Aa-Naa"/>
                                         </constraints>
                                     </datePicker>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWn-zr-ZgJ">
-                                        <rect key="frame" x="0.0" y="92" width="393" height="48"/>
+                                        <rect key="frame" x="0.0" y="171" width="353" height="48"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="48" id="xTn-bL-Qvu"/>
                                         </constraints>
@@ -57,6 +74,7 @@
                     </view>
                     <connections>
                         <outlet property="datePicker" destination="PST-qh-tgF" id="L3n-xy-iSd"/>
+                        <outlet property="dueDateSwitch" destination="dueDateSwitch" id="dueDateSwitchOutlet"/>
                         <outlet property="saveButton" destination="nWn-zr-ZgJ" id="DRB-eC-8kN"/>
                         <outlet property="titleTextField" destination="r1n-GT-99u" id="yfA-we-hJ3"/>
                     </connections>
