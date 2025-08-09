@@ -17,8 +17,12 @@ class TaskListViewController: UIViewController {
         let storyboard = UIStoryboard(name: "AddTask", bundle: nil)
         let addVC = storyboard.instantiateViewController(withIdentifier: "AddTaskViewController")
         
-        // モーダルで表示
-        addVC.modalPresentationStyle = .fullScreen
+        // 半モーダルで表示
+        addVC.modalPresentationStyle = .pageSheet
+        if let sheet = addVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.preferredCornerRadius = 20
+        }
         present(addVC, animated: true, completion: nil)
     }
     
@@ -27,11 +31,26 @@ class TaskListViewController: UIViewController {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(taskAdded),
+            name: NSNotification.Name("TaskAdded"),
+            object: nil
+        )
+    }
+    
+    @objc private func taskAdded() {
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }

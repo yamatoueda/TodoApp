@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,57 +16,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QG2-lu-cE3">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="DOK-Ag-k72">
+                                <rect key="frame" x="20.0" y="150" width="353" height="156"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DOK-Ag-k72">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="142"/>
-                                        <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="タイトルを入力" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1n-GT-99u">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="kLE-fz-vGi"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PST-qh-tgF">
-                                                <rect key="frame" x="0.0" y="44" width="393" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="48" id="9GH-Aa-Naa"/>
-                                                </constraints>
-                                            </datePicker>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWn-zr-ZgJ">
-                                                <rect key="frame" x="0.0" y="94" width="393" height="48"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="48" id="xTn-bL-Qvu"/>
-                                                </constraints>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="登録"/>
-                                                <connections>
-                                                    <action selector="saveButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="CfM-7j-5a6"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="タイトルを入力" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="r1n-GT-99u">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="kLE-fz-vGi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PST-qh-tgF">
+                                        <rect key="frame" x="0.0" y="44" width="393" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="9GH-Aa-Naa"/>
+                                        </constraints>
+                                    </datePicker>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWn-zr-ZgJ">
+                                        <rect key="frame" x="0.0" y="92" width="393" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="xTn-bL-Qvu"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="登録"/>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="CfM-7j-5a6"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="bottom" secondItem="sU0-Vo-4jt" secondAttribute="bottom" id="Lgv-1z-sCo"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="top" secondItem="rqs-aW-POl" secondAttribute="top" id="Qcy-Vk-fD3"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="leading" secondItem="rqs-aW-POl" secondAttribute="leading" id="RED-uj-czr"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="leading" secondItem="sU0-Vo-4jt" secondAttribute="leading" id="Swi-7y-5Io"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="trailing" secondItem="rqs-aW-POl" secondAttribute="trailing" id="XIW-BF-W6C"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="top" secondItem="sU0-Vo-4jt" secondAttribute="top" id="c6R-Oz-Id3"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="trailing" secondItem="sU0-Vo-4jt" secondAttribute="trailing" id="fHs-7r-D2e"/>
-                                    <constraint firstItem="DOK-Ag-k72" firstAttribute="bottom" secondItem="rqs-aW-POl" secondAttribute="bottom" id="o2U-bA-EHm"/>
-                                </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="rqs-aW-POl"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="sU0-Vo-4jt"/>
-                            </scrollView>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="DOK-Ag-k72" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="ABC-123"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="DOK-Ag-k72" secondAttribute="trailing" constant="20" id="DEF-456"/>
+                            <constraint firstItem="DOK-Ag-k72" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="150" id="GHI-789"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="datePicker" destination="PST-qh-tgF" id="L3n-xy-iSd"/>

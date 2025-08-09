@@ -18,6 +18,7 @@ class AddTaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        datePicker.locale = Locale(identifier: "ja_JP") // datePickerを日本語に設定
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +45,9 @@ class AddTaskViewController: UIViewController {
         AppData.shared.tasks.append(task)
         AppData.shared.saveAll()
 
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: NSNotification.Name("TaskAdded"), object: nil)
+        }
     }
     
 }
