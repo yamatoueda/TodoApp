@@ -82,4 +82,21 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
         cell.contentConfiguration = content
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let task = AppData.shared.tasks[indexPath.row]
+            
+            let alert = UIAlertController(title: "削除確認", message: "「\(task.title)」を削除しますか？", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "削除", style: .destructive) { _ in
+                AppData.shared.tasks.remove(at: indexPath.row)
+                AppData.shared.saveAll()
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            })
+            
+            alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel))
+            present(alert, animated: true)
+        }
+    }
 }
