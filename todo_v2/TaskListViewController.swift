@@ -165,4 +165,30 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
         configuration.performsFirstActionWithFullSwipe = true
         return configuration
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // TaskDetail.storyboardから詳細画面をインスタンス化
+        let storyboard = UIStoryboard(name: "TaskDetail", bundle: nil)
+        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "TaskDetailViewController") as? TaskDetailViewController else {
+            print("TaskDetailViewController のインスタンス化に失敗しました")
+            return
+        }
+        
+        // タスクデータを受け渡し
+        detailVC.task = AppData.shared.tasks[indexPath.row]
+        detailVC.taskIndex = indexPath.row
+        
+        // 更新通知のコールバックを設定
+        detailVC.onTaskUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+                self?.updateEmptyState()
+            }
+        }
+        
+        // ナビゲーションでプッシュ遷移
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 }
