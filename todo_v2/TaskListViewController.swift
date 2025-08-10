@@ -38,15 +38,42 @@ class TaskListViewController: UIViewController {
             name: NSNotification.Name("TaskAdded"),
             object: nil
         )
+        
+        updateEmptyState()
     }
     
     @objc private func taskAdded() {
         tableView.reloadData()
+        updateEmptyState()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        updateEmptyState()
+    }
+    
+    // タスクが0件のときは「タスクはありません」と表示
+    private func updateEmptyState() {
+        if AppData.shared.tasks.isEmpty {
+            let emptyView = UIView()
+            let label = UILabel()
+            label.text = "タスクはありません"
+            label.textAlignment = .center
+            label.textColor = UIColor.secondaryLabel
+            label.font = UIFont.systemFont(ofSize: 18)
+            
+            emptyView.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor)
+            ])
+            
+            tableView.backgroundView = emptyView
+        } else {
+            tableView.backgroundView = nil
+        }
     }
     
     deinit {
@@ -106,10 +133,11 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
             
             let alert = UIAlertController(title: "削除確認", message: "「\(task.title)」を削除しますか？", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "削除", style: .destructive) { _ in
+            alert.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] _ in
                 AppData.shared.tasks.remove(at: indexPath.row)
                 AppData.shared.saveAll()
                 tableView.deleteRows(at: [indexPath], with: .fade)
+                self?.updateEmptyState()
             })
             
             alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel))
