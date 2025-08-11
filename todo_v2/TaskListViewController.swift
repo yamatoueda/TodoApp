@@ -8,9 +8,35 @@
 import Foundation
 import UIKit
 
+enum SortOption: CaseIterable {
+    case createdAtAsc, createdAtDesc, dueDateAsc, dueDateDesc
+    
+    var displayName: String {
+        switch self {
+        case .createdAtAsc: return "作成日（古い順）"
+        case .createdAtDesc: return "作成日（新しい順）"
+        case .dueDateAsc: return "期限（近い順）"
+        case .dueDateDesc: return "期限（遠い順）"
+        }
+    }
+    
+    var iconName: String {
+        switch self {
+        case .createdAtAsc: return "calendar.badge.plus"
+        case .createdAtDesc: return "calendar.badge.plus"
+        case .dueDateAsc: return "clock"
+        case .dueDateDesc: return "clock"
+        }
+    }
+}
+
 class TaskListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    
+    // ソート状態管理
+    private var currentSortOption: SortOption = .createdAtDesc
+    private var sortedTasks: [Task] = []
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
         // StoryboardからAddTaskViewControllerをインスタンス化
@@ -32,6 +58,9 @@ class TaskListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
+        // ナビゲーションバーにソートボタンを追加
+        setupNavigationBar()
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(taskAdded),
@@ -39,18 +68,92 @@ class TaskListViewController: UIViewController {
             object: nil
         )
         
+        // 初回ソート実行
+        sortTasks()
         updateEmptyState()
     }
     
+    private func setupNavigationBar() {
+        let sortButton = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.up.arrow.down"),
+            style: .plain,
+            target: self,
+            action: #selector(sortButtonTapped)
+        )
+        navigationItem.leftBarButtonItem = sortButton
+        
+        // タイトルにソート状態を表示
+        updateNavigationTitle()
+    }
+    
+    private func updateNavigationTitle() {
+        title = "タスク一覧 (\(currentSortOption.displayName))"
+    }
+    
     @objc private func taskAdded() {
+        sortTasks() // ソート済みリストを更新
         tableView.reloadData()
         updateEmptyState()
+    }
+    
+    @objc private func sortButtonTapped() {
+        let actionSheet = UIAlertController(title: "ソート方法を選択", message: nil, preferredStyle: .actionSheet)
+        
+        for option in SortOption.allCases {
+            let action = UIAlertAction(title: option.displayName, style: .default) { [weak self] _ in
+                self?.currentSortOption = option
+                self?.sortTasks()
+                self?.updateNavigationTitle()
+                self?.tableView.reloadData()
+            }
+            
+            // 現在選択中のオプションにチェックマークを付ける
+            if option == currentSortOption {
+                action.setValue(true, forKey: "checked")
+            }
+            
+            actionSheet.addAction(action)
+        }
+        
+        actionSheet.addAction(UIAlertAction(title: "キャンセル", style: .cancel))
+        
+        // iPadでのpopover設定
+        if let popover = actionSheet.popoverPresentationController {
+            popover.barButtonItem = navigationItem.leftBarButtonItem
+        }
+        
+        present(actionSheet, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        sortTasks()
         tableView.reloadData()
         updateEmptyState()
+    }
+    
+    // MARK: - ソート機能
+    private func sortTasks() {
+        switch currentSortOption {
+        case .createdAtAsc:
+            sortedTasks = AppData.shared.tasks.sorted { $0.createdAt < $1.createdAt }
+        case .createdAtDesc:
+            sortedTasks = AppData.shared.tasks.sorted { $0.createdAt > $1.createdAt }
+        case .dueDateAsc:
+            sortedTasks = AppData.shared.tasks.sorted { task1, task2 in
+                // 期限なしは最後に配置
+                guard let date1 = task1.dueDate else { return false }
+                guard let date2 = task2.dueDate else { return true }
+                return date1 < date2
+            }
+        case .dueDateDesc:
+            sortedTasks = AppData.shared.tasks.sorted { task1, task2 in
+                // 期限なしは最後に配置
+                guard let date1 = task1.dueDate else { return false }
+                guard let date2 = task2.dueDate else { return true }
+                return date1 > date2
+            }
+        }
     }
     
     // タスクが0件のときは「タスクはありません」と表示
@@ -86,12 +189,12 @@ class TaskListViewController: UIViewController {
 
 extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AppData.shared.tasks.count
+        return sortedTasks.count
     }
 
     // セルの中身
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let task = AppData.shared.tasks[indexPath.row]
+        let task = sortedTasks[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         var content = cell.defaultContentConfiguration()
         
@@ -129,15 +232,19 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let task = AppData.shared.tasks[indexPath.row]
+            let task = sortedTasks[indexPath.row]
             
             let alert = UIAlertController(title: "削除確認", message: "「\(task.title)」を削除しますか？", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "削除", style: .destructive) { [weak self] _ in
-                AppData.shared.tasks.remove(at: indexPath.row)
-                AppData.shared.saveAll()
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                self?.updateEmptyState()
+                // sortedTasksから元のインデックスを見つけて削除
+                if let originalIndex = AppData.shared.tasks.firstIndex(where: { $0.id == task.id }) {
+                    AppData.shared.tasks.remove(at: originalIndex)
+                    AppData.shared.saveAll()
+                    self?.sortTasks()
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    self?.updateEmptyState()
+                }
             })
             
             alert.addAction(UIAlertAction(title: "キャンセル", style: .cancel))
@@ -146,16 +253,20 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let task = AppData.shared.tasks[indexPath.row]
+        let task = sortedTasks[indexPath.row]
         let title = task.isCompleted ? "未完了" : "完了"
         let backgroundColor: UIColor = task.isCompleted ? .systemOrange : .systemGreen
         
         let toggleAction = UIContextualAction(style: .normal, title: title) { [weak self] (_, _, completionHandler) in
-            AppData.shared.tasks[indexPath.row].isCompleted.toggle()
-            AppData.shared.tasks[indexPath.row].updatedAt = Date()
-            AppData.shared.saveAll()
-            
-            tableView.reloadRows(at: [indexPath], with: .none)
+            // sortedTasksから元のインデックスを見つけて更新
+            if let originalIndex = AppData.shared.tasks.firstIndex(where: { $0.id == task.id }) {
+                AppData.shared.tasks[originalIndex].isCompleted.toggle()
+                AppData.shared.tasks[originalIndex].updatedAt = Date()
+                AppData.shared.saveAll()
+                
+                self?.sortTasks()
+                tableView.reloadRows(at: [indexPath], with: .none)
+            }
             completionHandler(true)
         }
         
@@ -176,13 +287,20 @@ extension TaskListViewController: UITableViewDataSource, UITableViewDelegate {
             return
         }
         
-        // タスクデータを受け渡し
-        detailVC.task = AppData.shared.tasks[indexPath.row]
-        detailVC.taskIndex = indexPath.row
+        // sortedTasksから元のインデックスを見つけてタスクデータを受け渡し
+        let task = sortedTasks[indexPath.row]
+        guard let originalIndex = AppData.shared.tasks.firstIndex(where: { $0.id == task.id }) else {
+            print("元のタスクインデックスが見つかりません")
+            return
+        }
+        
+        detailVC.task = task
+        detailVC.taskIndex = originalIndex
         
         // 更新通知のコールバックを設定
         detailVC.onTaskUpdated = { [weak self] in
             DispatchQueue.main.async {
+                self?.sortTasks()
                 self?.tableView.reloadData()
                 self?.updateEmptyState()
             }
